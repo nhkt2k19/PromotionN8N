@@ -1,0 +1,871 @@
+{
+  "name": "Promotion",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{ $('Merge1').item.json.email }}",
+        "subject": "={{ $('Merge1').item.json.name }} , Ưu đãi ĐỘC QUYỀN cho khách hàng {{ $('Merge1').item.json.customer_type }}! ",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        520
+      ],
+      "id": "f50c20b7-e7aa-4084-ba21-a635acc27df7",
+      "name": "Send a message",
+      "webhookId": "99d91dc0-6cd5-47ea-9f64-b14f67f36c93",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "MvKM1b6zv4CQiPtB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        80
+      ],
+      "id": "6fe4db71-0d59-4a3a-b10d-e228bda67f63",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        720
+      ],
+      "id": "4b14ff62-4871-44be-baff-b6f4ad552e1e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FM8SzSYbyrs3kcmA",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        240,
+        220
+      ],
+      "id": "dbe542a1-04e6-4bda-b75d-fe6002a1093d",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=✨ {{ $('Merge1').item.json.name }}, Ưu đãi ĐỘC QUYỀN cho {{ $('Merge1').item.json.customer_type }}!\n\nKính gửi {{ $('Merge1').item.json.name }},\n\nChào bạn!\n\nVới tư cách là khách hàng {{ $('Merge1').item.json.customer_type }} của chúng tôi, SOS rất vui mừng gửi tặng bạn một món quà đặc biệt: Voucher giảm giá khi mua sắm tại cửa hàng của chúng tôi!\n\nĐây là cách chúng tôi muốn gửi lời cảm ơn sâu sắc vì bạn đã luôn tin tưởng và ủng hộ SOS. Voucher này là cơ hội tuyệt vời để bạn sở hữu những sản phẩm yêu thích hoặc khám phá các thiết kế mới nhất của chúng tôi với mức giá cực kỳ ưu đãi.\n\nMã Voucher của bạn là: {{ $('Merge1').item.json.promo_code }}\n\nCách sử dụng Voucher?\n\nTruy cập Fanpage của chúng tôi tại https://www.facebook.com/khang.ngo.750114/\n\nChọn sản phẩm bạn yêu thích và nhắn tin để đặt hàng\n\nNhập mã voucher khi thanh toán để được giảm 40%!\n\nƯu đãi diễn ra từ [ngày bắt đầu] đến [ngày kết thúc]. Nhanh tay kẻo lỡ nhé!\n\nMua sắm ngay: [Link Fanpage]\n\nĐiều khoản:\n\nVoucher áp dụng cho toàn bộ sản phẩm SOS.\n\nChỉ áp dụng từ [ngày bắt đầu] đến [ngày kết thúc].\n\nDành cho đơn hàng trực tuyến.\nKhông áp dụng với khuyến mãi khác.\n\nChỉ sử dụng 1 lần duy nhất.\n\nChính sách đổi trả áp dụng theo quy định của SOS.\n\nĐội ngũ SOS\n\n---------------------------------------------\nKết nối với chúng tôi:\nFacebook: https://www.facebook.com/khang.ngo.750114/\nHotline: 0833073708\n\nBạn nhận email này vì đã đăng ký với SOS. Hãy kiểm tra hộp thư rác nếu bạn không thấy email của chúng tôi.\n\nDựa vào bố cục trên:\nMục tiêu bạn cần làm: Viết lại email theo template trên\n- Về phần nội dung: Giữ nguyên nội dung, văn phong chính của nội dung mô tả, sáng tạo nội dung nhưng không làm phức tạp thêm. Hãy tự tạo ngày bắt đầu ngày kết thúc cho hợp lý\n- Về phần output: Tuân thủ nghiêm ngặt định dạng HTML. Xóa```html ```",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -900,
+        520
+      ],
+      "id": "3f7831a0-dadb-45e9-91ef-a1cf2add3308",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.customer_type }}",
+                    "rightValue": "VIP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "03a29687-44c6-4c5e-ac93-529d25b5aa5e"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "962dc93c-684c-46a9-ac42-e795723a3812",
+                    "leftValue": "={{ $json.customer_type }}",
+                    "rightValue": "Regular",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "748ccc76-8e34-4965-9864-055eea225693",
+                    "leftValue": "={{ $json.customer_type }}",
+                    "rightValue": "New",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -420,
+        80
+      ],
+      "id": "12c5d5e8-a22e-426e-b55b-c193f87e53b2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        520
+      ],
+      "id": "3806e018-15f0-49a7-99f6-5d8ae19337e8",
+      "name": "Wait",
+      "webhookId": "00f3d85a-fb11-4c8b-9a7e-a0caf84df3f2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Merge1').item.json.customer_type }}",
+                    "rightValue": "VIP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c62d98e3-a6ee-4cab-9ac1-8b96dbd350f3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "78c5fc1d-2f1d-48ef-a780-1360c3272faf",
+                    "leftValue": "={{ $('Merge1').item.json.customer_type }}",
+                    "rightValue": "Regular",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca4f540d-3e27-4410-9006-ff301ed8f836",
+                    "leftValue": "={{ $('Merge1').item.json.customer_type }}",
+                    "rightValue": "New",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        180,
+        520
+      ],
+      "id": "f0ba9f02-4dc5-4adc-ac73-e4d4412a9902",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1140,
+        420
+      ],
+      "id": "5a7e60c7-6a66-4bca-8080-90b917660dfa",
+      "name": "Gmail",
+      "webhookId": "52a40903-c6c7-436c-b466-6240ab98dbe7",
+      "notesInFlow": false,
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "MvKM1b6zv4CQiPtB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Lấy data từ node trước\nconst products = $('CodeRandomProductVIP').all();\n\n// 2. Lấy 3 sản phẩm đầu tiên (hoặc ít hơn nếu không đủ 3)\nconst selectedProducts = products\n  .slice(0, 3)\n  .map(item => item.json);  // mỗi item.json có { name, description, price, sku, … }\n\n// 3. Format tiền VNĐ\nconst formatVND = amount => {\n  const num = typeof amount === 'number' ? amount : Number(amount) || 0;\n  return new Intl.NumberFormat('vi-VN').format(num) + ' đ';\n};\n\n// 4. Tạo HTML cho email\nconst generateEmailHTML = (customerName) => {\n  // Chia products thành hàng 3 cột\n  const rows = [];\n  const perRow = 3;\n  for (let i = 0; i < selectedProducts.length; i += perRow) {\n    const chunk = selectedProducts.slice(i, i + perRow);\n    const tds = chunk.map(prod => {\n      const name       = prod.name || '';\n      const desc       = prod.description || '';\n      const price      = Number(prod.price) || 0;\n      const discount   = 0.4;\n      const promoPrice = Math.round(price * (1 - discount));\n      const giftCode   = `${prod.sku || ''}-SUMMER40`;\n      return `\n        <td style=\"padding:10px; text-align:center; vertical-align:top; width:33.33%;\">\n          <h4 style=\"margin:4px 0; font-size:16px; color:#2c3e50;\">${name}</h4>\n          <p style=\"margin:4px 0; font-size:14px; color:#7f8c8d;\">\n            ${desc}\n          </p>\n          <p style=\"margin:4px 0;\">\n            <span style=\"text-decoration:line-through; color:#999; font-size:13px;\">\n              ${formatVND(price)}\n            </span><br/>\n            <span style=\"font-size:18px; color:#e74c3c; font-weight:bold;\">\n              ${formatVND(promoPrice)}\n            </span>\n          </p>\n          <div style=\"background:#ecf0f1; padding:6px; font-family:'Courier New'; \n                      font-size:13px; font-weight:bold; border-radius:4px;\">\n            CODE: ${giftCode}\n          </div>\n        </td>`;\n    });\n    rows.push(`<tr>${tds.join('')}</tr>`);\n  }\n\n  // Trả về template HTML hoàn chỉnh\n  return `\n<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n  <title>Ưu Đãi Độc Quyền Hè 2025 từ SOS</title>\n  <style>\n    body, table, td, a { margin:0; padding:0; }\n    img { border:0; line-height:100%; outline:none; text-decoration:none; }\n    table { border-collapse:collapse !important; }\n    /* Responsive */\n    @media only screen and (max-width:600px) {\n      .container, .product-section, .cta-btn { width:100% !important; }\n      td { display:block !important; width:100% !important; }\n    }\n  </style>\n</head>\n<body style=\"background:#f4f4f4; padding:20px; font-family:Arial,sans-serif;\">\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n      <td align=\"center\">\n        <table class=\"container\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\"\n               style=\"background:#fff; border:1px solid #ddd; border-radius:8px; overflow:hidden;\">\n          \n          <!-- Banner -->\n          <tr>\n            <td style=\"background:url('https://via.placeholder.com/600x200/FFD700/333?text=Summer+Sale+2025')\n                           center/cover no-repeat; height:200px;\">\n            </td>\n          </tr>\n\n          <!-- Header -->\n          <tr>\n            <td style=\"padding:20px; text-align:center;\">\n              <h1 style=\"margin:0; font-size:26px; color:#c0392b;\">\n                ƯU ĐÃI ĐỘC QUYỀN HÈ 2025\n              </h1>\n              <p style=\"margin:8px 0 0; font-size:16px; color:#333;\">\n                Giảm ngay <strong>40%</strong> cho khách hàng thân thiết\n              </p>\n            </td>\n          </tr>\n\n          <!-- Lời chào -->\n          <tr>\n            <td style=\"padding:0 30px 20px; font-size:15px; color:#333;\">\n              <p>Kính gửi <strong>${customerName}</strong>,</p>\n              <p>\n                Mùa hè sôi động đã đến! SOS Store trân trọng tặng bạn ưu đãi\n                <strong>40%</strong> cho 3 sản phẩm HOT nhất mùa Hè 2025. Nhanh tay kẻo lỡ!\n              </p>\n            </td>\n          </tr>\n\n          <!-- Sản phẩm -->\n          <tr>\n            <td style=\"padding:0 20px;\">\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                ${rows.join('')}\n              </table>\n            </td>\n          </tr>\n\n          <!-- CTA -->\n          <tr>\n            <td align=\"center\" style=\"padding:20px;\">\n              <a href=\"https://yourstore.com/summer-sale\"\n                 class=\"cta-btn\"\n                 style=\"background:#e67e22; color:#fff; text-decoration:none;\n                        padding:12px 24px; border-radius:5px; font-size:16px;\n                        display:inline-block;\">\n                KHÁM PHÁ NGAY & NHẬN ƯU ĐÃI\n              </a>\n            </td>\n          </tr>\n\n          <!-- Điều khoản -->\n          <tr>\n            <td style=\"padding:0 30px 20px; font-size:12px; color:#777;\">\n              <strong>Điều khoản áp dụng:</strong>\n              <ul style=\"margin:8px 0 0 16px; padding:0; list-style:disc;\">\n                <li>Thời gian: 01/07–10/07/2025.</li>\n                <li>Áp dụng khi mua trực tiếp tại cửa hàng.</li>\n                <li>Không kết hợp với khuyến mãi khác.</li>\n              </ul>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#34495e; color:#ecf0f1; text-align:center;\n                       padding:20px; font-size:13px;\">\n              <p style=\"margin:0 0 8px;\">SOS Store – 123 Nguyễn Huệ, Quận 1, TP.HCM</p>\n              <p style=\"margin:0 0 8px;\">\n                <a href=\"https://facebook.com/sosstore\" style=\"color:#ecf0f1; text-decoration:none;\">\n                  Facebook\n                </a> |\n                <a href=\"tel:0901234567\" style=\"color:#ecf0f1; text-decoration:none;\">\n                  090 123 4567\n                </a>\n              </p>\n              <p style=\"margin:0; font-size:11px; color:#95a5a6;\">\n                Bạn nhận email này vì đã đăng ký tại SOS Store.\n                <a href=\"#\" style=\"color:#95a5a6; text-decoration:underline;\">\n                  Hủy đăng ký\n                </a>\n              </p>\n            </td>\n          </tr>\n\n        </table>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>`;\n};\n\n// 5. Lấy danh sách khách hàng từ node Merge1 (theo cách code thứ hai)\nconst emailInputs = $('Merge1').all();\n\n// 6. Tạo kết quả (giữ nguyên cách xử lý của code đầu tiên)\nconst results = emailInputs.map(item => {\n  const customerEmail = item.json.email || '';\n  const customerName  = item.json.name  || 'Quý khách';\n  const htmlTemplate  = generateEmailHTML(customerName);\n\n  return {\n    json: {\n      email: customerEmail,\n      subject: \"Ưu Đãi Độc Quyền Mùa Hè 2025 - Giảm giá đến 40%\",\n      html: htmlTemplate,\n      customerName,\n      productCount: selectedProducts.length,\n      totalOriginalValue: selectedProducts\n        .reduce((sum, p) => sum + (Number(p.price) || 0), 0),\n      totalPromoValue: selectedProducts\n        .reduce((sum, p) => sum + Math.round((Number(p.price)||0)*0.6), 0),\n      products: selectedProducts.map(p => ({\n        name: p.name,\n        originalPrice: Number(p.price) || 0,\n        promoPrice: Math.round((Number(p.price)||0)*0.6),\n        giftCode: `${p.sku}-SUMMER40`\n      }))\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        360
+      ],
+      "id": "9ed41605-6296-45dc-823b-328d6e824bc8",
+      "name": "templateProduct"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Lấy data từ node trước\nconst products = $('CodeRandomProduct1').all();\n\n// 2. Lấy 3 sản phẩm đầu tiên (hoặc ít hơn nếu không đủ 3)\nconst selectedProducts = products;\n// 3. Format tiền VNĐ\nconst formatVND = amount => {\n  const num = typeof amount === 'number' ? amount : Number(amount) || 0;\n  return new Intl.NumberFormat('vi-VN').format(num) + ' đ';\n};\n\n// 4. Tạo HTML cho email\nconst generateEmailHTML = (customerName) => {\n  // Chia products thành hàng 3 cột\n  const rows = [];\n  const perRow = 3;\n  for (let i = 0; i < selectedProducts.length; i += perRow) {\n    const chunk = selectedProducts.slice(i, i + perRow);\n    const tds = chunk.map(prod => {\n      const name       = prod.name || '';\n      const desc       = prod.description || '';\n      const price      = Number(prod.price) || 0;\n      const discount   = 0.4;\n      const promoPrice = Math.round(price * (1 - discount));\n      const giftCode   = `${prod.sku || ''}-SUMMER40`;\n      return `\n        <td style=\"padding:10px; text-align:center; vertical-align:top; width:33.33%;\">\n          <h4 style=\"margin:4px 0; font-size:16px; color:#2c3e50;\">${name}</h4>\n          <p style=\"margin:4px 0; font-size:14px; color:#7f8c8d;\">\n            ${desc}\n          </p>\n          <p style=\"margin:4px 0;\">\n            <span style=\"text-decoration:line-through; color:#999; font-size:13px;\">\n              ${formatVND(price)}\n            </span><br/>\n            <span style=\"font-size:18px; color:#e74c3c; font-weight:bold;\">\n              ${formatVND(promoPrice)}\n            </span>\n          </p>\n          <div style=\"background:#ecf0f1; padding:6px; font-family:'Courier New'; \n                      font-size:13px; font-weight:bold; border-radius:4px;\">\n            CODE: ${giftCode}\n          </div>\n        </td>`;\n    });\n    rows.push(`<tr>${tds.join('')}</tr>`);\n  }\n\n  // Trả về template HTML hoàn chỉnh\n  return `\n<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n  <title>Ưu Đãi Độc Quyền Hè 2025 từ SOS</title>\n  <style>\n    body, table, td, a { margin:0; padding:0; }\n    img { border:0; line-height:100%; outline:none; text-decoration:none; }\n    table { border-collapse:collapse !important; }\n    /* Responsive */\n    @media only screen and (max-width:600px) {\n      .container, .product-section, .cta-btn { width:100% !important; }\n      td { display:block !important; width:100% !important; }\n    }\n  </style>\n</head>\n<body style=\"background:#f4f4f4; padding:20px; font-family:Arial,sans-serif;\">\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n      <td align=\"center\">\n        <table class=\"container\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\"\n               style=\"background:#fff; border:1px solid #ddd; border-radius:8px; overflow:hidden;\">\n          \n          <!-- Banner -->\n          <tr>\n            <td style=\"background:url('https://via.placeholder.com/600x200/FFD700/333?text=Summer+Sale+2025')\n                           center/cover no-repeat; height:200px;\">\n            </td>\n          </tr>\n\n          <!-- Header -->\n          <tr>\n            <td style=\"padding:20px; text-align:center;\">\n              <h1 style=\"margin:0; font-size:26px; color:#c0392b;\">\n                ƯU ĐÃI ĐỘC QUYỀN HÈ 2025\n              </h1>\n              <p style=\"margin:8px 0 0; font-size:16px; color:#333;\">\n                Giảm ngay <strong>40%</strong> cho khách hàng thân thiết\n              </p>\n            </td>\n          </tr>\n\n          <!-- Lời chào -->\n          <tr>\n            <td style=\"padding:0 30px 20px; font-size:15px; color:#333;\">\n              <p>Kính gửi <strong>${customerName}</strong>,</p>\n              <p>\n                Mùa hè sôi động đã đến! SOS Store trân trọng tặng bạn ưu đãi\n                <strong>40%</strong> cho 3 sản phẩm HOT nhất mùa Hè 2025. Nhanh tay kẻo lỡ!\n              </p>\n            </td>\n          </tr>\n\n          <!-- Sản phẩm -->\n          <tr>\n            <td style=\"padding:0 20px;\">\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                ${rows.join('')}\n              </table>\n            </td>\n          </tr>\n\n          <!-- CTA -->\n          <tr>\n            <td align=\"center\" style=\"padding:20px;\">\n              <a href=\"https://yourstore.com/summer-sale\"\n                 class=\"cta-btn\"\n                 style=\"background:#e67e22; color:#fff; text-decoration:none;\n                        padding:12px 24px; border-radius:5px; font-size:16px;\n                        display:inline-block;\">\n                KHÁM PHÁ NGAY & NHẬN ƯU ĐÃI\n              </a>\n            </td>\n          </tr>\n\n          <!-- Điều khoản -->\n          <tr>\n            <td style=\"padding:0 30px 20px; font-size:12px; color:#777;\">\n              <strong>Điều khoản áp dụng:</strong>\n              <ul style=\"margin:8px 0 0 16px; padding:0; list-style:disc;\">\n                <li>Thời gian: 01/07–10/07/2025.</li>\n                <li>Áp dụng khi mua trực tiếp tại cửa hàng.</li>\n                <li>Không kết hợp với khuyến mãi khác.</li>\n              </ul>\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#34495e; color:#ecf0f1; text-align:center;\n                       padding:20px; font-size:13px;\">\n              <p style=\"margin:0 0 8px;\">SOS Store – 123 Nguyễn Huệ, Quận 1, TP.HCM</p>\n              <p style=\"margin:0 0 8px;\">\n                <a href=\"https://facebook.com/sosstore\" style=\"color:#ecf0f1; text-decoration:none;\">\n                  Facebook\n                </a> |\n                <a href=\"tel:0901234567\" style=\"color:#ecf0f1; text-decoration:none;\">\n                  090 123 4567\n                </a>\n              </p>\n              <p style=\"margin:0; font-size:11px; color:#95a5a6;\">\n                Bạn nhận email này vì đã đăng ký tại SOS Store.\n                <a href=\"#\" style=\"color:#95a5a6; text-decoration:underline;\">\n                  Hủy đăng ký\n                </a>\n              </p>\n            </td>\n          </tr>\n\n        </table>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>`;\n};\n\n// 5. Lấy danh sách khách hàng từ node Merge1 (theo cách code thứ hai)\nconst emailInputs = $('Merge1').all();\n\n// 6. Tạo kết quả (giữ nguyên cách xử lý của code đầu tiên)\nconst results = emailInputs.map(item => {\n  const customerEmail = item.json.email || '';\n  const customerName  = item.json.name  || 'Quý khách';\n  const htmlTemplate  = generateEmailHTML(customerName);\n\n  return {\n    json: {\n      email: customerEmail,\n      subject: \"Ưu Đãi Độc Quyền Mùa Hè 2025 - Giảm giá đến 40%\",\n      html: htmlTemplate,\n      customerName,\n      productCount: selectedProducts.length,\n      totalOriginalValue: selectedProducts\n        .reduce((sum, p) => sum + (Number(p.price) || 0), 0),\n      totalPromoValue: selectedProducts\n        .reduce((sum, p) => sum + Math.round((Number(p.price)||0)*0.6), 0),\n      products: selectedProducts.map(p => ({\n        name: p.name,\n        originalPrice: Number(p.price) || 0,\n        promoPrice: Math.round((Number(p.price)||0)*0.6),\n        giftCode: `${p.sku}-SUMMER40`\n      }))\n    }\n  };\n});\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        520
+      ],
+      "id": "a95e9855-4d5b-43dd-a38b-adda29592a72",
+      "name": "templateProduct1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lấy toàn bộ dữ liệu từ Google Sheets node\nconst allItems = $('ProductSheet').all();\n\n// Lọc các sản phẩm đang active\nconst activeItems = allItems.filter(item => item.json.is_active === true);\n\n// Trộn mảng (Fisher-Yates Shuffle)\nfor (let i = activeItems.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [activeItems[i], activeItems[j]] = [activeItems[j], activeItems[i]];\n}\n\n// Lấy 1 sản phẩm đầu tiên sau khi trộn (nếu có)\nconst selected = activeItems.length > 0 ? [activeItems[0]] : [];\n\nreturn selected;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        520
+      ],
+      "id": "57875f5b-30ef-4ae6-a81a-744647fea718",
+      "name": "CodeRandomProduct1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lấy toàn bộ dữ liệu từ Google Sheets node\nconst allItems = $('ProductSheet').all();\n\n// Lọc các sản phẩm đang active\nconst activeItems = allItems.filter(item => item.json.is_active === true);\n\n// Trộn mảng (Fisher-Yates Shuffle)\nfor (let i = activeItems.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [activeItems[i], activeItems[j]] = [activeItems[j], activeItems[i]];\n}\n\n// Lấy 3 sản phẩm đầu tiên sau khi trộn (hoặc ít hơn nếu không đủ)\nconst selected = activeItems.slice(0, 3);\n\nreturn selected;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        360
+      ],
+      "id": "40c4f7dd-cc6c-4aec-9019-00a41344f8e6",
+      "name": "CodeRandomProductVIP"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 931942824,
+          "mode": "list",
+          "cachedResultName": "Trang tính3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit#gid=931942824"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1020,
+        80
+      ],
+      "id": "c68c102b-bc38-45e9-ba48-69eeb80f35c2",
+      "name": "ProductSheet",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kfMvtIMxIHQOHhpT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit#gid=0"
+        },
+        "options": {
+          "outputFormatting": {
+            "values": {
+              "general": "UNFORMATTED_VALUE",
+              "date": "FORMATTED_STRING"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -720,
+        80
+      ],
+      "id": "2929437e-15bf-4c2b-94f8-b99bfcb06c59",
+      "name": "CustomerSheet",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kfMvtIMxIHQOHhpT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// items là mảng chứa dữ liệu từ node trước\nfor (const item of items) {\n  // Kiểm tra dữ liệu đầu vào\n  if (!item.json || !item.json.id) {\n    item.json.promo_code = `VIP-PROMO-UNKNOWN-${Date.now().toString().slice(-5)}`;\n    item.json.tracking_id = `ztrack_vip_UNKNOWN`;\n    continue; // Bỏ qua nếu dữ liệu không hợp lệ\n  }\n  // Tạo mã giảm giá và tracking ID cho VIP/Potential\n  item.json.promo_code = `VIP-PROMO-${item.json.id}-${Date.now().toString().slice(-5)}`;\n  item.json.tracking_id = `ztrack_vip_${item.json.id}`;\n  item.json.discount='40%';\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        -60
+      ],
+      "id": "0ed505d7-f169-441f-9408-027fe2165e4d",
+      "name": "CampainVIP"
+    },
+    {
+      "parameters": {
+        "jsCode": "// items là mảng chứa dữ liệu từ node trước\nfor (const item of items) {\n  // Kiểm tra dữ liệu đầu vào\n  if (!item.json || !item.json.id) {\n    item.json.promo_code = `REG-PROMO-UNKNOWN-${Date.now().toString().slice(-5)}`;\n    item.json.tracking_id = `ztrack_reg_UNKNOWN`;\n    continue; // Bỏ qua nếu dữ liệu không hợp lệ\n  }\n  // Tạo mã giảm giá và tracking ID cho Regular/New\n  item.json.promo_code = `REG-PROMO-${item.json.id}-${Date.now().toString().slice(-5)}`;\n  item.json.tracking_id = `ztrack_reg_${item.json.id}`;\n  item.json.discount='20%';\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        80
+      ],
+      "id": "143cee61-f2e1-467f-ab45-7047f33605a7",
+      "name": "CampainREG"
+    },
+    {
+      "parameters": {
+        "jsCode": "// items là mảng chứa dữ liệu từ node trước\nfor (const item of items) {\n  // Kiểm tra dữ liệu đầu vào\n  if (!item.json || !item.json.id) {\n    item.json.promo_code = `REG-NEW-UNKNOWN-${Date.now().toString().slice(-5)}`;\n    item.json.tracking_id = `ztrack_new_UNKNOWN`;\n    continue; // Bỏ qua nếu dữ liệu không hợp lệ\n  }\n  // Tạo mã giảm giá và tracking ID cho Regular/New\n  item.json.promo_code = `REG-NEW-${item.json.id}-${Date.now().toString().slice(-5)}`;\n  item.json.tracking_id = `ztrack_new_${item.json.id}`;\n  item.json.discount='10%';\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        240
+      ],
+      "id": "5298f485-281f-4cc9-8dca-118a6690c583",
+      "name": "CampainNEW"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27e5e7a6-314d-43a2-bc8e-c2f2688ee073",
+              "name": "emailSubject",
+              "value": "=✨ {{ $json.name }}, Ưu đãi ĐỘC QUYỀN cho {{ $json.customer_type }}!\n\nKính gửi {{ $json.name }},\n\nChào bạn!\n\nVới tư cách là khách hàng {{ $json.customer_type }} của chúng tôi, SOS rất vui mừng gửi tặng bạn một món quà đặc biệt: Voucher giảm giá khi mua sắm tại cửa hàng của chúng tôi!\n\nĐây là cách chúng tôi muốn gửi lời cảm ơn sâu sắc vì bạn đã luôn tin tưởng và ủng hộ SOS. Voucher này là cơ hội tuyệt vời để bạn sở hữu những sản phẩm yêu thích hoặc khám phá các thiết kế mới nhất của chúng tôi với mức giá cực kỳ ưu đãi.\n\nMã Voucher của bạn là: {{ $json.promo_code }}\n\nCách sử dụng Voucher?\n\nTruy cập Fanpage của chúng tôi tại [Link Fanpage]\n\nChọn sản phẩm bạn yêu thích và nhắn tin để đặt hàng\n\nNhập mã voucher khi thanh toán để được giảm 40%!\n\nƯu đãi diễn ra từ [ngày bắt đầu] đến [ngày kết thúc]. Nhanh tay kẻo lỡ nhé!\n\nMua sắm ngay: [Link Fanpage]\n\nĐiều khoản:\n\nVoucher áp dụng cho toàn bộ sản phẩm SOS.\n\nChỉ áp dụng từ [ngày bắt đầu] đến [ngày kết thúc].\n\nDành cho đơn hàng trực tuyến.\n\nKhông áp dụng với khuyến mãi khác.\n\nChỉ sử dụng 1 lần duy nhất.\n\nChính sách đổi trả áp dụng theo quy định của SOS.\n\nĐội ngũ SOS\nKết nối với chúng tôi:\nFacebook: [Link Facebook]\nHotline: [Số điện thoại]\n\nBạn nhận email này vì đã đăng ký với SOS. Hãy kiểm tra hộp thư rác nếu bạn không thấy email của chúng tôi.\n\nBạn có thể dùng nội dung này để gửi qua Zalo ZNS, Email dạng văn bản hoặc làm bản xem trước trước khi render HTML. Nếu cần mình chuyển thành Markdown, JSON hoặc nội dung Zalo mẫu thì mình cũng hỗ trợ được.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1280,
+        520
+      ],
+      "id": "471ddf9b-860f-4c4c-adf6-75ee731a4ad0",
+      "name": "Create Mail Template"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XBYLlGTddd58f3C0pM6c1rd-5tOCXXGbN92L96MyD0E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "customer_type": "Regular",
+            "customer_id": "={{ $('Merge1').item.json.customer_id }}"
+          },
+          "matchingColumns": [
+            "customer_id"
+          ],
+          "schema": [
+            {
+              "id": "customer_id",
+              "displayName": "customer_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "zalo_id",
+              "displayName": "zalo_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "customer_type",
+              "displayName": "customer_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_purchase_date",
+              "displayName": "last_purchase_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        560,
+        700
+      ],
+      "id": "773cd361-0caf-427f-b6c7-8e97ecd334de",
+      "name": "Update New Customer",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kfMvtIMxIHQOHhpT",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "ProductSheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Create Mail Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "CampainVIP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CampainREG",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CampainNEW",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "CodeRandomProductVIP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CodeRandomProduct1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update New Customer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    },
+    "templateProduct": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "templateProduct1": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CodeRandomProduct1": {
+      "main": [
+        [
+          {
+            "node": "templateProduct1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CodeRandomProductVIP": {
+      "main": [
+        [
+          {
+            "node": "templateProduct",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ProductSheet": {
+      "main": [
+        [
+          {
+            "node": "CustomerSheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CustomerSheet": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CampainVIP": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CampainREG": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "CampainNEW": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Create Mail Template": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "01b218c6-bdba-494b-971a-9f355ba0f408",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e2343f60c38b36e07edf744efa61a2e9cc2a8836f1bf5cc8ec37aa232376c03d"
+  },
+  "id": "EECV5sx9oyqeozde",
+  "tags": []
+}
